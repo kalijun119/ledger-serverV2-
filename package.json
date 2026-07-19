@@ -1,0 +1,24 @@
+{
+  "name": "ledger-market-data-server",
+  "version": "1.0.0",
+  "description": "Proxies and caches Finnhub market data for the Ledger frontend, keeping the API key server-side.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "express-session": "^1.18.0",
+    "helmet": "^7.1.0",
+    "pg": "^8.12.0"
+
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
