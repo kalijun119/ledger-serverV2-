@@ -30,6 +30,7 @@ const helmet = require("helmet");
 const session = require("express-session");
 const rateLimit = require("express-rate-limit");
 const attachAuth = require("./auth");
+const attachWatchlist = require("./watchlist");
 const pool = require("./db");
 const PORT = process.env.PORT || 4000;
 const FINNHUB_KEY = process.env.FINNHUB_API_KEY;
@@ -73,6 +74,8 @@ app.use(
 );
 
 attachAuth(app); // adds /api/signup, /api/login, /api/logout, /api/me
+attachWatchlist(app); // adds /api/watchlist (GET/POST) and /api/watchlist/:ticker (DELETE)
+
 
 
 // --- Public rate limiting (protects YOUR server, separate from Finnhub's own limit) ---
