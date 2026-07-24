@@ -31,6 +31,8 @@ const session = require("express-session");
 const rateLimit = require("express-rate-limit");
 const attachAuth = require("./auth");
 const attachWatchlist = require("./watchlist");
+const attachPortfolio = require("./portfolio");
+const attachAlerts = require("./alerts");
 const pool = require("./db");
 const PORT = process.env.PORT || 4000;
 const FINNHUB_KEY = process.env.FINNHUB_API_KEY;
@@ -93,6 +95,8 @@ app.use("/api/", publicLimiter);
 // restarts/wakes from sleep, we can reload yesterday's already-fetched
 // history instantly instead of waiting ~5 minutes to re-fetch everything.
 const cache = { quotes: {}, history: {}, historyFetchedAt: {}, lastUpdated: null };
+attachPortfolio(app, cache);
+attachAlerts(app, cache);
 
 async function fetchQuote(ticker) {
   const url = `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`;
