@@ -33,6 +33,7 @@ module.exports = function attachWatchlist(app) {
   app.post("/api/watchlist", limiter, requireLogin, async (req, res) => {
     const ticker = (req.body?.ticker || "").trim().toUpperCase();
     if (!ticker) return res.status(400).json({ error: "Missing ticker." });
+    if (!/^[A-Z0-9.]{1,10}$/.test(ticker)) return res.status(400).json({ error: "Invalid ticker format." });
     await pool.query(
       "insert into watchlist (user_email, ticker) values ($1, $2) on conflict (user_email, ticker) do nothing",
       [req.session.userEmail, ticker]
@@ -42,6 +43,7 @@ module.exports = function attachWatchlist(app) {
 
   app.delete("/api/watchlist/:ticker", limiter, requireLogin, async (req, res) => {
     const ticker = req.params.ticker.trim().toUpperCase();
+    if (!/^[A-Z0-9.]{1,10}$/.test(ticker)) return res.status(400).json({ error: "Invalid ticker format." });
     await pool.query("delete from watchlist where user_email = $1 and ticker = $2", [
       req.session.userEmail,
       ticker
