@@ -69,6 +69,7 @@ module.exports = function attachPortfolio(app, cache) {
     if (!ticker || !Number.isFinite(shares) || shares <= 0) {
       return res.status(400).json({ error: "Enter a valid ticker and a positive number of shares." });
     }
+    if (!/^[A-Z0-9.]{1,10}$/.test(ticker)) return res.status(400).json({ error: "Invalid ticker format." });
     const price = currentPrice(ticker);
     if (price === null) return res.status(400).json({ error: "No current price available for that ticker yet." });
 
@@ -111,6 +112,7 @@ module.exports = function attachPortfolio(app, cache) {
     if (!ticker || !Number.isFinite(shares) || shares <= 0) {
       return res.status(400).json({ error: "Enter a valid ticker and a positive number of shares." });
     }
+    if (!/^[A-Z0-9.]{1,10}$/.test(ticker)) return res.status(400).json({ error: "Invalid ticker format." });
     const price = currentPrice(ticker);
     if (price === null) return res.status(400).json({ error: "No current price available for that ticker yet." });
 
