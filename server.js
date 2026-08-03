@@ -28,6 +28,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const session = require("express-session");
+const pgSession = require("connect-pg-simple")(session);
 const rateLimit = require("express-rate-limit");
 const attachAuth = require("./auth");
 const attachWatchlist = require("./watchlist");
@@ -63,6 +64,16 @@ app.use(cors({ origin: ALLOWED_ORIGIN, credentials: true }));
 app.use(express.json());
 app.use(
   session({
+    // Sessions are now stored in Supabase, not just in this server's memory —
+    // this fixes two things: express-session's own docs explicitly warn its
+    // default MemoryStore "is not designed for a production environment," and
+    // practically, it meant every Render restart/sleep-wake logged everyone
+    // out. This table is created automatically on first run.
+    store: new pgSession({
+      pool: pool,
+      tableName: "user_sessions",
+      createTableIfMissing: true
+    }),
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
