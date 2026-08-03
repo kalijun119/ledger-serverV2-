@@ -62,6 +62,7 @@ module.exports = function attachAlerts(app, cache) {
     const direction = req.body?.direction;
     const targetPrice = Number(req.body?.targetPrice);
     if (!ticker) return res.status(400).json({ error: "Choose a ticker." });
+    if (!/^[A-Z0-9.]{1,10}$/.test(ticker)) return res.status(400).json({ error: "Invalid ticker format." });
     if (direction !== "above" && direction !== "below") return res.status(400).json({ error: "Choose above or below." });
     if (!Number.isFinite(targetPrice) || targetPrice <= 0) return res.status(400).json({ error: "Enter a valid target price." });
 
