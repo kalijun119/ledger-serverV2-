@@ -79,7 +79,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: process.env.COOKIE_SECURE === "true" ? "none" : "lax",
       secure: false, // set to true once you're serving over HTTPS in production
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     }
